@@ -1,16 +1,13 @@
-$hexagon-color-background:        #020f23;
-$hexagon-color-foreground:        #152f56;
-$hexagon-color-link:              #b4c7d9;
-$hexagon-color-link-hover:        #e9f2fa;
-$hexagon-color-text:              #ffffff;
-$hexagon-color-text-muted:        #999999;
-$hexagon-color-section:           #1f3c67;
+$hexagon-color-background:        white;
+$hexagon-color-foreground:        white;
+$hexagon-color-link:              #0034FF;
+$hexagon-color-link-hover:        #0034FF;
+$hexagon-color-text:              #0034FF;
+$hexagon-color-text-muted:        #0034FF;
+$hexagon-color-section:           white;
 $hexagon-color-section-border:    $hexagon-color-background;
 
 body {
-  // Theme-specific images
-  --image-background:             url("themes/hexagon/background.png");
-
   // Layout Colors
   --color-background:             #{$hexagon-color-background}; // Main background (dark blue, large hexagons)
   --color-foreground:             #{$hexagon-color-foreground}; // Foreground (lighter blue, small hexagons)
@@ -110,4 +107,66 @@ body {
   // Spoilers
   --color-spoiler-link:           #{$hexagon-color-link};
   --color-spoiler-link-hover:     #{$hexagon-color-link-hover};
+}
+
+* {
+  border-radius: 0 !important;
+}
+
+#nav .secondary {
+  border-left: 1px solid blue;
+  border-top: 1px solid blue;
+  padding-bottom: 0.5em;
+  padding-top: 0.5em;
+}
+
+#nav .logo {
+  margin-bottom: 6px;
+}
+
+#nav {
+  grid-template-columns: 4.75em 1fr;
+}
+
+div#page aside#sidebar {
+  width: 14em;
+  float: left;
+  border-right: 1px solid blue;
+  height: 100%;
+  padding-right: 1em;
+}
+
+header#top {
+  border-bottom: 1px solid var(--color-text);
+}
+
+input {
+  border: 1px solid blue !important;
+  background-color: white;
+  color: blue;
+  font-weight: 800;
+}
+
+
+button[type="submit"] {
+  background-color: blue !important;
+  color: white;
+}
+
+div#searchbox.mascotbox div#static-index div form div {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  gap: 0.5em;
+  padding: 2em;
+}
+
+div#searchbox.mascotbox div#static-index div form div > * {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+input:focus {
+  background: white !important;
+  color: blue !important;
 }
