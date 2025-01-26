@@ -9,7 +9,7 @@ module Danbooru
 
     # The name of this Danbooru.
     def app_name
-      "e621"
+      "MiladyBooru"
     end
 
     def description
@@ -627,6 +627,12 @@ module Danbooru
     end
 
     def opensearch_host
+    end
+
+    def opensearch_user
+    end
+
+    def opensearch_password
     end
 
     # Use a recaptcha on the signup page to protect against spambots creating new accounts.

@@ -550,7 +550,7 @@ class User < ApplicationRecord
         :REJ_UPLOAD_HOURLY
       elsif can_upload_free? || is_admin?
           true
-      elsif younger_than(7.days)
+      elsif younger_than(7.days) && !Danbooru.config.allow_newbies
         :REJ_UPLOAD_NEWBIE
       elsif !is_privileged? && post_edit_limit <= 0 && !Danbooru.config.disable_throttles?
         :REJ_UPLOAD_EDIT

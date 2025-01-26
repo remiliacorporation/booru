@@ -11,8 +11,8 @@ class UploadsController < ApplicationController
   end
 
   def new
-    if CurrentUser.can_upload_with_reason == :REJ_UPLOAD_NEWBIE
-      return access_denied("You can not upload during your first week.")
+    if CurrentUser.can_upload_with_reason == :REJ_UPLOAD_NEWBIE && !Danbooru.config.allow_newbies
+      return access_denied("You can not upload during your first week. LOL!")
     end
     @upload = Upload.new
     respond_with(@upload)
