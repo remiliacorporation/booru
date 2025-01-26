@@ -9,6 +9,7 @@
 @import "base/links";
 @import "base/fontawesome";
 
+@import "common/footer";
 @import "common/helper_classes";
 @import "common/helper_palette";
 @import "common/ads.scss";
@@ -24,9 +25,9 @@
 @import "common/jquery_ui_custom.scss";
 @import "common/link_decorator.scss";
 @import "common/main_layout.scss";
+@import "common/navigation.scss";
 @import "common/news.scss";
 @import "common/notices.scss";
-@import "common/page_header.scss";
 @import "common/paginator.scss";
 @import "common/scores";
 @import "common/simple_form.scss";
@@ -51,6 +52,7 @@
 @import "specific/favorites.scss";
 @import "specific/forum.scss";
 @import "specific/guest_warning.scss";
+@import "specific/home.scss";
 @import "specific/iqdb_queries.scss";
 @import "specific/keyboard_shortcuts.scss";
 @import "specific/lockdown.scss";

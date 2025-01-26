@@ -2,13 +2,20 @@ div#search {
   margin-bottom: 1em;
 }
 
+body {
+  display: flex;
+  flex-flow: column;
+  min-height: 100vh;
+}
+
 div#page {
+  flex: 1;
   overflow: visible;
   padding: $padding-050 $padding-025 themed("content-padding-bottom");
 
   @include window-larger-than(800px) {
     border-radius: $border-radius-full;
-    margin: 0 1em;
+    margin: 0.5em 1em 0;
     padding-left: $padding-050;
     padding-right: $padding-050;
   }
@@ -87,37 +94,6 @@ div#page {
 
 .mobile-search {
   display: none;
-}
-
-footer#page-footer {
-  display: grid;
-  grid-template-columns: 1fr 5em 1fr;
-  align-items: center;
-
-  padding: $padding-050 $padding-025;
-  margin-top: 1em;
-  line-height: 1.75em;
-  background-color: themed("color-foreground");
-
-  @include window-larger-than(800px) {
-    border-radius: $border-radius-full $border-radius-full 0 0;
-    margin: 1em 1em 0 1em;
-    padding: $padding-050;
-  }
-
-  .footer-logo {
-    width: 5em;
-  }
-
-  .left {
-    text-align: right;
-    padding-right: 0.75em;
-  }
-
-  .right {
-    text-align: left;
-    padding-left: 0.75em;
-  }
 }
 
 div.clearfix {
