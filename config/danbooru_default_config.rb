@@ -13,7 +13,7 @@ module Danbooru
     end
 
     def description
-      "Find good furry art, fast"
+      "Milady Booru!"
     end
 
     def domain
