@@ -12,12 +12,12 @@ Rails.application.configure do
     policy.script_src  :self, "ads.dragonfru.it", "https://www.google.com/recaptcha/", "https://www.gstatic.com/recaptcha/", "https://www.recaptcha.net/"
     policy.style_src   :self, :unsafe_inline
     policy.connect_src :self, "ads.dragonfru.it", "plausible.dragonfru.it"
-    policy.object_src  :self, 'static1.e621.net', 'static1.e926.net'
-    policy.media_src   :self, 'static1.e621.net', 'static1.e926.net'
+    policy.object_src  :self, 'booru.remilia.org', 'booru.remilia.org'
+    policy.media_src   :self, 'booru.remilia.org', 'booru.remilia.org'
     policy.frame_ancestors :none
     policy.frame_src   'https://www.google.com/recaptcha/', 'https://www.recaptcha.net/'
     policy.font_src    :self
-    policy.img_src     :self, :data, 'static1.e621.net', 'static1.e926.net', 'ads.dragonfru.it'
+    policy.img_src     :self, :data, 'booru.remilia.org', 'booru.remilia.org', 'ads.dragonfru.it'
     policy.child_src   :none
     policy.form_action :self, 'discord.e621.net', 'discord.com'
     # Specify URI for violation reports

@@ -16,9 +16,7 @@
             <div class="flex-grid border-bottom">
                 <div class="col">
                     <label class="section-label" for="post_sources">Sources</label>
-                    <div>You should include: A link to the artists page where this was obtained, and a link to the
-                        submission page where this image was obtained. No available source should ONLY be used if the
-                        content has never been posted online anywhere else.
+                    <div>Include the original link to the content here. For social media like Twitter/X, use a link to the post, not a direct link to the media. If you don't know of an original link or if this content has never been posted anywhere, check 'No available source.'
                     </div>
                 </div>
                 <div class="col2">
@@ -28,118 +26,60 @@
             <template v-if="normalMode">
                 <div class="flex-grid border-bottom">
                     <div class="col">
-                        <label class="section-label" for="names">Artists and Contributors</label>
-                        <div><a href="/forum_topics/23553">How do I tag an artist?</a></div>
-                        <div>Please don't use <a href="/wiki_pages/anonymous_artist">anonymous_artist</a> or <a href="/wiki_pages/unknown_artist">unknown_artist</a> tags unless they fall under those definitions on the wiki.</div>
+                        <label class="section-label" for="names">Category</label>
+                        <div>Select the Category the Post belongs to. Only use multiple category tags when necessary: a post may feature both Milady[milady] and Remilio[remilio] without being specifically a Milady[milady] or Remilio[remilio] meme; a Milady meme that has been CHEESEWORLD[cheeseworld] deepfried is still a Milady meme.</div>
                     </div>
                     <div class="col2">
-                        <div>
-            <textarea class="tag-textarea" v-model="tagEntries.artist" id="post_artist" rows="2"
-                      placeholder="Ex: artist_name, unknown_artist, anonymous_artist etc." data-autocomplete="tag-edit"></textarea>
+                        <div class="flex-wrap">
+                            <div v-for="tag in categoryTags" :key="tag.name" class="mr-2 mb-2">
+                                <label class="flex items-center">
+                                    <input type="checkbox" :value="tag.value" v-model="selectedCategoryTags">
+                                    <span class="ml-1">{{ tag.name }}</span>
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="flex-grid border-bottom">
                     <div class="col">
-                        <label class="section-label" for="post_sex_tags">Characters</label>
+                        <label class="section-label" for="post_sex_tags">Type</label>
                         <div>
-                            Select (and write in) all that apply. Character sex is based only on what is visible in the
-                            image.
+                            Select all which describe the type of the Post without detailing its content. This can relate to its format, style and creation.
                         </div>
-                        <div><a href="/wiki_pages/tag_what_you_see">
-                            Outside information or other images should not be used when deciding what tags are used.
-                        </a></div>
                     </div>
                     <div class="col2">
                         <div class="flex-wrap">
-                            <image-checkbox :check="check" :checks="checkboxes.selected" v-for="check in checkboxes.sex"
+                            <image-checkbox :check="check" :checks="checkboxes.selected" v-for="check in checkboxes.type"
                                             @set="setCheck"
                                             :key="check.name"></image-checkbox>
                         </div>
-                        <hr>
-                        <div class="flex-wrap">
-                            <image-checkbox :check="check" :checks="checkboxes.selected"
-                                            v-for="check in checkboxes.count" @set="setCheck"
-                                            :key="check.name"></image-checkbox>
-                        </div>
-                        <hr>
-                        <div class="flex-wrap">
-                            <image-checkbox :check="check" :checks="checkboxes.selected"
-                                            v-for="check in checkboxes.pairing" @set="setCheck"
-                                            :key="check.name"></image-checkbox>
-                        </div>
                         <textarea class="tag-textarea" rows="2" v-model="tagEntries.character" id="post_character"
-                                  placeholder="Ex: character_name solo_focus etc."
+                                  placeholder="Ex: hyperedit slideshow irl remixed_content motivational chinese"
                                   data-autocomplete="tag-edit"></textarea>
                     </div>
                 </div>
-                <div class="flex-grid border-bottom">
+                <div class="flex-grid border-bottom" v-if="isCheeseWorldSelected">
                     <div class="col">
-                        <label class="section-label">Body Types and Species</label>
-                        <div>One listed body type per visible character, listed options are mutually exclusive.</div>
+                        <label class="section-label">CHEESEWORLD Type</label>
+                        <div>Select type tags specific to the CHEESEWORLD[cheeseworld] Category here. Do not include content details. CHEESEWORLD Meme[cheeseworld_meme] should only be used for image content that has been deepfried and watermarked. [cheeseworld_raw] is for non-fried, non-captioned content. CHEESEWORLD Memes[cheeseworld_meme] should refer to the Parent Post ID of their respective CHEESEWORLD Raw[cheeseworld_raw] whenever possible. You may describe a gangstamp using tags here. <a href="/guidelines">See also the guidelines</a></div>
                     </div>
                     <div class="col2">
                         <div class="flex-wrap">
                             <image-checkbox :check="check" :checks="checkboxes.selected"
-                                            v-for="check in checkboxes.body" @set="setCheck"
+                                            v-for="check in checkboxes.cheeseworld" @set="setCheck"
                                             :key="check.name"></image-checkbox>
                         </div>
                         <textarea class="tag-textarea" rows="2" v-model="tagEntries.species" id="post_species"
-                                  placeholder="Ex: bear dragon hyena rat newt etc."
+                                  placeholder="Ex: gangstamp_godzamn gangstamp_master_baiters gangstamp_lonely_tiger nested_gangstamp"
                                   data-autocomplete="tag-edit"></textarea>
                     </div>
                 </div>
-                <div class="flex-grid border-bottom">
-                    <div class="col">
-                        <label class="section-label">Contentious Content</label>
-                        <div>
-                            Fetishes or subjects that other users may find extreme or objectionable.
-                            These allow users to find or blacklist content with ease. Make sure that you are tagging
-                            these upon initial upload.
-                        </div>
-                    </div>
-                    <div class="col2">
-          <textarea class="tag-textarea" v-model="tagEntries.content" id="post_content" rows="2"
-                    data-autocomplete="tag-edit"
-                    placeholder="Ex: young gore scat watersports diaper my_little_pony vore not_furry rape hyper etc."></textarea>
-                    </div>
-                </div>
             </template>
-            <div class="flex-grid border-bottom">
-                <div class="col">
-                    <label class="section-label">Rating</label>
-                    <div>Explicit tags include sex, pussy, penis, masturbation, fellatio, etc.
-                        (<a href="/help/ratings" target="_blank">help</a>)
-                    </div>
-                </div>
-                <div class="col2">
-                    <div class="box-section background-red" v-if="showErrors && invalidRating">
-                        You must select an appropriate rating for this image.
-                    </div>
-                    <div>
-                        <template v-if="!safe">
-                            <button class="toggle-button rating-e" :class="{active: rating==='e'}" @click="rating = 'e'">
-                                Explicit
-                            </button>
-                            <button class="toggle-button rating-q" :class="{active: rating==='q'}" @click="rating = 'q'">
-                                Questionable
-                            </button>
-                        </template>
-                        <button class="toggle-button rating-s" :class="{active: rating==='s'}" @click="rating = 's'">Safe
-                        </button>
-                    </div>
-                </div>
-            </div>
             <div class="flex-grid come-together-now">
                 <div class="col">
-                    <label class="section-label" for="post_tags">Other Tags</label>
+                    <label class="section-label" for="post_tags">General Tags</label>
                     <div>
-                        Separate tags with spaces. (<a href="/help/tags" target="_blank">help</a>)
-                    </div>
-                    <div>
-                      <a href="/wiki_pages/tag_what_you_see">
-                        Outside information or other images should not be used when deciding what tags are used.
-                      </a>
+                        All tags relating to the Post its content and characteristics go here. Tag according to visible content foremost, and restrict yourself from describing abstract concepts: a tag such as 'Faustian' is likely to be incoherent between users. <a href="/rules">Need help? Click here</a>
                     </div>
                 </div>
                 <div class="col2">
@@ -160,10 +100,10 @@
                     <div class="related-tag-functions">
                         Related:
                         <a href="#" @click.prevent="findRelated()">Tags</a> |
-                        <a href="#" @click.prevent="findRelated(1)">Artists</a> |
+                        <a href="#" @click.prevent="findRelated(1)">Categories</a> |
                         <a href="#" @click.prevent="findRelated(3)">Copyrights</a> |
                         <a href="#" @click.prevent="findRelated(4)">Characters</a> |
-                        <a href="#" @click.prevent="findRelated(5)">Species</a> |
+                        <a href="#" @click.prevent="findRelated(5)">Types</a> |
                         <a href="#" @click.prevent="findRelated(7)">Metatags</a> |
                         <a href="#" @click.prevent="previewFinalTags">Preview Final Tags</a>
                     </div>
@@ -177,6 +117,7 @@
             <div class="flex-grid border-bottom">
                 <div class="col">
                     <label class="section-label">Parent Post ID</label>
+                    <div>If your post is a variant, edit, or higher quality/resolution of an existing post, add its Post ID here.</div>
                 </div>
                 <div class="col2">
                     <input v-model.number="parentID" placeholder="Ex. 12345"/>
@@ -190,29 +131,13 @@
                     <input type="text" v-model="lockedTags" data-autocomplete="tag-query"/>
                 </div>
             </div>
-            <div v-if="allowRatingLock" class="flex-grid border-bottom">
-                <div class="col">
-                    <label class="section-label">Lock Rating</label>
-                </div>
-                <div class="col2">
-                    <label><input type="checkbox" v-model="ratingLocked"/> Lock Rating</label>
-                </div>
-            </div>
             <div class="flex-grid border-bottom">
                 <div class="col">
                     <label class="section-label" for="post_description">Description</label>
+                    <div>If your Post media source contains external captions, from e.g. Twitter/X, add them to the Post description. Try to add relevant text present on the media to the Post description, e.g. CHEESEWORLD image macro top and bottom texts. Any other details that can't or shouldn't be expressed through tags go here as well.</div>
                 </div>
                 <div class="col2">
-                    <%= ApplicationController.new.render_to_string(partial: "dtext_input", locals: { limit: Danbooru.config.post_descr_max_size, textarea: '<textarea  class="dtext-formatter-input tag-textarea dtext" id="post_description" rows="10" v-model="description"></textarea>'.html_safe, allow_color: true }) %>
-                </div>
-            </div>
-            <div v-if="allowUploadAsPending" class="flex-grid border-bottom">
-                <div class="col">
-                    <label class="section-label">Upload as Pending</label>
-                    <div>If you aren't sure if this particular post is up to the standards, checking this box will put it into the moderation queue.</div>
-                </div>
-                <div class="col2">
-                    <label><input type="checkbox" v-model="uploadAsPending"/> Upload as Pending</label>
+                    <textarea class="dtext-formatter-input tag-textarea dtext" id="post_description" rows="10" v-model="description"></textarea>
                 </div>
             </div>
             <div class="flex-grid">
@@ -250,37 +175,27 @@
   import filePreview from './file_preview.vue';
   import fileInput from './file_input.vue';
 
-  const sex_checks = [
-    {name: 'Male'},
-    {name: 'Female'},
-    {name: 'Andromorph'},
-    {name: 'Gynomorph'},
-    {name: 'Hermaphrodite', tag: 'herm'},
-    {name: 'Male-Herm', tag: 'maleherm'},
-    {name: 'Ambiguous', tag: 'ambiguous_gender'}];
-
-  const pairing_checks = [
-    {name: 'Male/Male'},
-    {name: 'Male/Female'},
-    {name: 'Female/Female'},
-    {name: 'Intersex/Male'},
-    {name: 'Intersex/Female'},
-    {name: 'Intersex/Intersex'}
+  const type_checks = [
+    {name: 'Meme', tag: 'meme'},
+    {name: 'Non-meme', tag: 'non_meme'},
+    {name: 'Image Macro', tag: 'imagemacro'},
+    {name: 'Captioned', tag: 'captioned'},
+    {name: 'Uncaptioned', tag: 'uncaptioned'},
+    {name: 'CHEESEWORLD Watermark', tag: 'cheeseworld_watermark'},
+    {name: 'Drawing', tag: 'drawing'},
+    {name: 'AI-generated', tag: 'ai_generated'},
+    {name: 'maker.remilia.org', tag: 'maker_remilia_org'}
   ];
 
-  const char_count_checks = [
-    {name: 'Solo'},
-    {name: 'Duo'},
-    {name: 'Trio'},
-    {name: 'Group'},
-    {name: 'Zero Pictured'}];
-
-  const body_type_checks = [
-    {name: 'Anthro'},
-    {name: 'Feral'},
-    {name: 'Humanoid'},
-    {name: 'Human'},
-    {name: 'Taur'}];
+  const cheeseworld_checks = [
+    {name: 'CHEESEWORLD Meme', tag: 'cheeseworld_meme'},
+    {name: 'CHEESEWORLD Raw', tag: 'cheeseworld_raw'},
+    {name: 'CHEESEWORLD GIF', tag: 'cheeseworld_gif'},
+    {name: 'CHEESEWORLD Video', tag: 'cheeseworld_video'},
+    {name: 'Has Gangstamp', tag: 'has_gangstamp'},
+    {name: 'No Gangstamp', tag: 'no_gangstamp'},
+    {name: 'Is Gangstamp', tag: 'is_gangstamp'}
+  ];
 
   function tagSorter(a, b) {
     return a.name > b.name ? 1 : -1;
@@ -311,11 +226,8 @@
         }
         allChecks[check.name.toLowerCase().replace(' ', '_')] = true;
       };
-      sex_checks.forEach(addChecks);
-      pairing_checks.forEach(addChecks);
-      char_count_checks.forEach(addChecks);
-      body_type_checks.forEach(addChecks);
-
+      type_checks.forEach(addChecks);
+      cheeseworld_checks.forEach(addChecks);
 
       return {
         safe: window.uploaderSettings.safeSite,
@@ -334,22 +246,31 @@
         sources: [''],
         normalMode: !window.uploaderSettings.compactMode,
 
+        categoryTags: [
+          { name: 'Milady', value: 'milady' },
+          { name: 'Remilia', value: 'remilia' },
+          { name: 'CHEESEWORLD', value: 'cheeseworld' },
+          { name: 'Remilio', value: 'remilio' },
+          { name: 'YAYO', value: 'yayo' },
+          { name: 'Kagami', value: 'kagami' },
+          { name: 'Fumo', value: 'fumo' },
+          { name: 'Bonkler', value: 'bonkler' },
+          { name: 'Other', value: 'other' }
+        ],
+        selectedCategoryTags: [],
+
         checkboxes: {
-          sex: sex_checks,
-          pairing: pairing_checks,
-          count: char_count_checks,
-          body: body_type_checks,
+          type: type_checks,
+          cheeseworld: cheeseworld_checks,
           selected: {},
           all: allChecks
         },
         tagEntries: {
-          // These had a bizarre naming pattern
-          // Old names are listed below VVV
-          artist: "",     // character: '',
-          character: "",  // sex: '',
-          species: "",    // bodyType: '',
-          content: "",    // theme: '',
-          other: "",      // other: '',
+          artist: "", // Used for category
+          character: "", // Used for type
+          species: "", // Used for cheeseworld type
+          content: "", // Not used
+          other: "", // Used for general tags
         },
 
         tagPreview: {
@@ -371,7 +292,7 @@
 
         parentID: '',
         description: '',
-        rating: '',
+        rating: 's', // Always set to Safe
         error: '',
         duplicateId: 0,
       };
@@ -416,27 +337,16 @@
         }
       };
 
-      // Import the post rating from a query parameter
-      const fillRating = function() {
-        if(!params.has("rating")) return;
-        const rating = params.get("rating")[0].toLowerCase();
-        if(!/[sqe]/.test(rating)) return;
-        self.rating = rating;
-      };
-
       fillField('parentID', 'parent');
       fillField('description', 'description');
       fillTags();
-      fillRating();
+      // Set rating to Safe
+      this.rating = 's';
       if(params.has('sources')) {
         self.sources = params.get('sources').split(',');
       }
-      if(this.allowRatingLock)
-        fillFieldBool('ratingLocked', 'rating_locked');
       if(this.allowLockedTags)
         fillField('lockedTags', 'locked_tags');
-      if(this.allowUploadAsPending)
-        fillFieldBool("uploadAsPending", "upload_as_pending")
     },
     methods: {
       setCheck(tag, value) {
@@ -449,6 +359,12 @@
           return;
         const self = this;
         this.submitting = true;
+        
+        // Convert category selections to tags
+        if (this.selectedCategoryTags.length > 0) {
+          this.tagEntries.artist = this.selectedCategoryTags.join(' ');
+        }
+        
         const data = new FormData();
         if (typeof this.uploadValue === "string") {
           data.append('upload[direct_url]', this.uploadValue);
@@ -456,14 +372,12 @@
           data.append('upload[file]', this.uploadValue);
         }
         data.append('upload[tag_string]', this.tags);
-        data.append('upload[rating]', this.rating);
+        data.append('upload[rating]', 's'); // Always set to Safe
         data.append('upload[source]', this.sources.join('\n'));
         data.append('upload[description]', this.description);
         data.append('upload[parent_id]', this.parentID);
         if (this.allowLockedTags)
           data.append('upload[locked_tags]', this.lockedTags);
-        if (this.allowRatingLock)
-          data.append('upload[locked_rating]', this.ratingLocked);
         if (this.allowUploadAsPending)
           data.append('upload[as_pending]', this.uploadAsPending);
         jQuery.ajax('/uploads.json', {
@@ -615,33 +529,36 @@
       }
     },
     computed: {
+      isCheeseWorldSelected() {
+        return this.selectedCategoryTags.includes('cheeseworld');
+      },
       tags() {
         const self = this;
+        
+        // Add selected category tags
+        let categorTags = this.selectedCategoryTags.join(' ');
+        
         if (!this.normalMode)
           return this.tagEntries.other;
+          
         const checked = Object.keys(this.checkboxes.selected).filter(function (x) {
           return self.checkboxes.selected[x] === true;
         });
-        return checked.concat([this.tagEntries.other, this.tagEntries.artist, this.tagEntries.character,
-          this.tagEntries.species, this.tagEntries.content]).join(' ').replace(',', ' ').trim().replace(/ +/g, ' ');
+        
+        return [categorTags, checked.join(' '), this.tagEntries.other, this.tagEntries.character,
+          this.tagEntries.species].join(' ').replace(',', ' ').trim().replace(/ +/g, ' ');
       },
       tagsArray() {
-        return this.tags.toLowerCase().split(' ');
+        return this.tags.toLowerCase().split(' ').filter(x => x);
       },
       tagCount: function () {
-        return this.tags.split(' ').filter(function (x) {
-          return x;
-        }).length;
+        return this.tagsArray.length;
       },
       notEnoughTags: function () {
         return this.tagCount < 4;
       },
-      invalidRating: function () {
-        return !this.rating;
-      },
       preventUpload: function () {
-        return this.sourceWarning || this.notEnoughTags
-          || this.invalidRating || this.invalidUploadValue;
+        return this.sourceWarning || this.notEnoughTags || this.invalidUploadValue;
       },
       duplicatePath: function () {
         return `/posts/${this.duplicateId}`;

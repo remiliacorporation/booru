@@ -1,0 +1,77 @@
+# HTTPS server
+server {
+    listen 443 ssl;
+    server_name booru.remilia.org;
+    
+    # SSL certificate configuration
+    ssl_certificate /etc/letsencrypt/live/booru.remilia.org/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/booru.remilia.org/privkey.pem;
+    
+    # SSL settings
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_prefer_server_ciphers on;
+    ssl_ciphers "EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH";
+    ssl_session_cache shared:SSL:10m;
+    ssl_session_timeout 1d;
+    
+    root /app/public;
+    index index.html;
+    access_log off;
+    client_max_body_size 100m;
+    
+    # Keep all your existing location blocks
+    location /data {
+        expires max;
+        break;
+    }
+    
+    location /data/deleted/ {
+        add_header Cache-Control "private";
+        secure_link $arg_auth,$arg_expires;
+        secure_link_md5 "$secure_link_expires $uri $arg_uid ${DANBOORU_PROTECTED_FILE_SECRET}";
+        if ($secure_link = "") {
+            return 403;
+        }
+        if ($secure_link = "0") {
+            return 403;
+        }
+    }
+    
+    location /data/replacements/ {
+        add_header Cache-Control "private";
+        secure_link $arg_auth,$arg_expires;
+        secure_link_md5 "$secure_link_expires $uri $arg_uid ${DANBOORU_REPLACEMENT_FILE_SECRET}";
+        if ($secure_link = "") {
+            return 403;
+        }
+        if ($secure_link = "0") {
+            return 403;
+        }
+    }
+    
+    location /tags/autocomplete.json {
+        proxy_pass http://autocompleted:8118/;
+        proxy_redirect off;
+    }
+    
+    location @app_server {
+        proxy_pass http://app_server;
+        proxy_redirect off;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header Host $host:$server_port;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Port $server_port;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+    
+    location / {
+        try_files $uri @app_server;
+    }
+    
+    error_page 404 /404.html;
+    error_page 500 502 503 504 /500.html;
+}
+
+upstream app_server {
+    server e621:9000;
+}

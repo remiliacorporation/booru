@@ -27,7 +27,7 @@ module Danbooru
 
     # The canonical hostname of the site.
     def hostname
-      Socket.gethostname
+      "booru.remilia.org"
     end
 
     # Contact email address of the admin.

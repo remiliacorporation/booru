@@ -1,7 +1,5 @@
-version: "3"
-
 x-environment: &common-env
-  DANBOORU_HOSTNAME: http://143.198.49.226:${EXPOSED_SERVER_PORT:-3000}
+  # DANBOORU_HOSTNAME: http://143.198.49.226:${EXPOSED_SERVER_PORT:-3000}
   DANBOORU_REDIS_URL: redis://redis
   DANBOORU_MEMCACHED_SERVERS: memcached
   DANBOORU_IQDB_SERVER: http://iqdb:5588
@@ -15,6 +13,12 @@ x-environment: &common-env
   # Hide annoying output from libvips on corrupt files
   VIPS_WARNING: "0"
   DD_TRACE_STARTUP_LOGS: false
+
+  SIDEKIQ_QUEUES: default:1;mailers:2;search:3
+  SIDEKIQ_CONCURRENCY: 5
+
+  DD_ENABLE: "false"
+
 
 x-depends-on: &common-depends-on
   memcached:
@@ -38,7 +42,7 @@ services:
       - ./docker/cron_tasks/daily:/etc/periodic/daily
     environment:
       <<: *common-env
-      RAILS_ENV: development
+      RAILS_ENV: production
       DD_AGENT_HOST: datadog-agent
       DD_SERVICE: ${DD_SERVICE:-}
       DD_ENV: ${DD_ENV:-}
@@ -66,7 +70,10 @@ services:
     volumes:
       - ./public:/app/public
       - post_data:/app/public/data
-      - ./docker/default.conf.template:/etc/nginx/templates/default.conf.template
+      - ./docker/prod.conf.template:/etc/nginx/templates/default.conf.template
+      # Mount the entire letsencrypt directory instead of just the domain folder
+      - /etc/letsencrypt:/etc/letsencrypt
+      
     environment:
       <<: *common-env
       NGINX_PORT: ${EXPOSED_SERVER_PORT:-3000}
@@ -74,7 +81,8 @@ services:
       - autocompleted
       - e621
     ports:
-      - "${EXPOSED_SERVER_PORT:-3000}:${EXPOSED_SERVER_PORT:-3000}"
+      - "80:80"
+      - "443:443"
     
   redis:
     image: redis:7.0.10-alpine
